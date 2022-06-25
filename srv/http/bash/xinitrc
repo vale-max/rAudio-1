@@ -12,6 +12,7 @@ else # no network connection
 	cursor=yes
 fi
 matchbox-window-manager -use_cursor $cursor &
+/usr/bin/backlightd &
 
 zoom=$( echo "print $zoom / 100" | perl )
 [[ $zoom != 1 ]] && scalefactor="--force-device-scale-factor=$zoom"

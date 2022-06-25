@@ -294,6 +294,7 @@ elif [[ $stream ]]; then
 		fi
 		[[ $file == *icecast.radiofrance.fr* ]] && icon=radiofrance
 		[[ $file == *stream.radioparadise.com* ]] && icon=radioparadise
+		[[ $file == *raudio.lan* ]] && tipo=DAB
 		if [[ $state != play ]]; then
 			state=stop
 			Title=
@@ -314,6 +315,24 @@ $radiosampling" > $dirshm/radio
 					. <( grep -E '^Artist|^Album|^Title|^coverart|^station' $dirshm/status )
 					[[ ! $displaycover ]] && coverart=
 				fi
+			elif [[ $tipo == DAB ]]; then
+				id=DAB
+				stationname=${station/* - }
+				if [[ ! -e $dirshm/radio ]] || ! systemctl -q is-active radio; then
+                                        echo "\
+$file
+$stationname
+$id
+$radiosampling" > $dirshm/radio
+                                        systemctl start radio
+                                else
+                                        . <( grep -E '^Artist|^Album|^Title|^coverart|^station' $dirshm/status )
+                                        [[ ! $displaycover ]] && coverart=
+                                fi
+
+			
+			
+			
 			elif [[ $Title && $displaycover ]]; then
 				# split Artist - Title: Artist - Title (extra tag) or Artist: Title (extra tag)
 				readarray -t radioname <<< $( echo $Title | sed 's/ - \|: /\n/' )

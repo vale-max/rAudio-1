@@ -38,8 +38,17 @@ case $id in
 	lajazz )              id=405;;
 	ocoramonde )          id=404;;
 	opera )               id=409;;
+	DAB )		      id=500;;
 esac
+if [[ $id != 500 ]]; then
+	: >/dev/tcp/8.8.8.8/53 || exit # online check
+fi
+
 [[ $id < 4 ]] && icon=radioparadise || icon=radiofrance
+
+dabData() {
+	metadata=("$station" "$(cat /srv/http/data/shm/webradio/DABlabel.txt)" "DAB radio" "DAB" "10")
+}
 
 radioparadiseData() {
 	readarray -t metadata <<< $( curl -sGk -m 5 \
@@ -65,7 +74,13 @@ radiofranceData() {
 		| sed 's/""/"/g; s/^null$//' ) # trim 2 x doublequotes and null(jq empty value)
 }
 metadataGet() {
-	[[ $id < 4 ]] && radioparadiseData || radiofranceData
+	if [[ $id < 4 ]]; then
+	   radioparadiseData
+	elif [[ $id < 500 ]]; then
+	   radiofranceData
+	else
+	   dabData
+	fi
 	artist=${metadata[0]//\"/\\\"}
 	title=${metadata[1]//\"/\\\"}
 	album=${metadata[2]//\"/\\\"}
@@ -83,12 +98,19 @@ metadataGet() {
 		countdown=$(( countdown - ${metadata[5]} )) # radiofrance
 	fi
 
-	if [[ $coverurl ]]; then
+	if [[ $coverurl ]] && [[ $coverurl != "DAB" ]]; then
 		name=$( echo $artist$title | tr -d ' \"`?/#&'"'" )
 		coverfile=$dirshm/webradio/$name.jpg
 		curl -s $coverurl -o $coverfile
 		coverart=/data/shm/webradio/$name.jpg
 	fi
+	if [[ $coverurl = "DAB" ]]; then
+		slidename=DABslide$( date +%s%3N ).jpg
+		coverart=/data/shm/webradio/$slidename
+		cp /srv/http/data/shm/webradio/DABslide.jpg /srv/http/data/shm/webradio/$slidename
+	fi
+	   
+	   
 	[[ -e $dirsystem/vumeter ]] && coverart=
 	elapsed=$( printf '%.0f' $( { echo status; sleep 0.05; } \
 				| telnet 127.0.0.1 6600 2> /dev/null \
