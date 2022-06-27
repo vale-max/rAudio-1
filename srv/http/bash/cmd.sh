@@ -181,8 +181,6 @@ stopRadio() {
 	if [[ -e $dirshm/radio ]]; then
 		systemctl stop radio
 		rm -f $dirshm/{radio,status}
-		cp /srv/http/data/webradiosimg/dablogo.jpg $dirshm/webradio/DABslide.jpg
-		echo - >$dirshm/webradio/DABlabel.txt
 	fi
 }
 urldecode() { # for webradio url to filename
