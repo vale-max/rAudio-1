@@ -108,6 +108,7 @@ metadataGet() {
 		slidename=DABslide$( date +%s%3N ).jpg
 		coverart=/data/shm/webradio/$slidename
 		cp /srv/http/data/shm/webradio/DABslide.jpg /srv/http/data/shm/webradio/$slidename
+		touch /srv/http/data/shm/webradio/DABlabel.txt #avoid label deletion by coverfileslimit
 	fi
 	   
 	   
