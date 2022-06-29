@@ -47,7 +47,8 @@ fi
 [[ $id < 4 ]] && icon=radioparadise || icon=radiofrance
 
 dabData() {
-	metadata=("$station" "$(cat /srv/http/data/shm/webradio/DABlabel.txt)" "DAB radio" "DAB" "10")
+	DABlab="$(cat /srv/http/data/shm/webradio/DABlabel.txt)"
+	metadata=("$station" "${DABlab//\"/}" "DAB radio" "DAB" "10")
 }
 
 radioparadiseData() {
