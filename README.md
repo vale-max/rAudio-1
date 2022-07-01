@@ -9,6 +9,7 @@ Audio player for
 
 ![guide](https://github.com/rern/_assets/raw/master/guide/guide.gif)
 
+- DAB Radio
 - A new release after [**R+R e6**](https://www.runeaudio.com/forum/runeaudio-r-e6-t7141.html)
 - Based on Arch Linux Arm - `mpd` `nginx`
 - Metadata Tag Editor - `kid3-cli`
