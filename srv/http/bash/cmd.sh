@@ -754,7 +754,6 @@ mpcseek )
 	;;
 mpcupdate )
 	path=${args[1]}
-	logger called with path = $path
 	if [[ $path == dab ]]; then
 		/usr/lib/dab-subsystem/dab-skeleton.bash
 	else
