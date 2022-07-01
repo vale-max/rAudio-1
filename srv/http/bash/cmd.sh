@@ -754,14 +754,19 @@ mpcseek )
 	;;
 mpcupdate )
 	path=${args[1]}
-	if [[ $path == rescan ]]; then
-		echo rescan > $dirmpd/updating
-		mpc -q rescan
+	logger called with path = $path
+	if [[ $path == dab ]]; then
+		/usr/lib/dab-subsystem/dab-skeleton.bash
 	else
-		echo $path > $dirmpd/updating
-		mpc -q update "$path"
+		if [[ $path == rescan ]]; then
+			echo rescan > $dirmpd/updating
+			mpc -q rescan
+		else
+			echo $path > $dirmpd/updating
+			mpc -q update "$path"
+		fi
+		pushstream mpdupdate 1
 	fi
-	pushstream mpdupdate 1
 	;;
 mpdoledlogo )
 	mpdoledLogo

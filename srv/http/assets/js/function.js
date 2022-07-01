@@ -740,10 +740,11 @@ function infoUpdate( path ) {
 		  icon    : 'refresh-library'
 		, title   : 'Library Database'
 		, message : ( path ? '<i class="fa fa-folder"></i> <wh>'+ path +'</wh>' : '' )
-		, radio   : ( path ? '' : { 'Only changed files' : 1, 'Rebuild entire database': 2 } )
+		, radio   : ( path ? '' : { 'Only changed files' : 1, 'Rebuild entire database': 2, 'Rescan DAB radio': 3 } )
 		, values  : [ 1 ]
 		, ok      : function() {
 			if ( infoVal() == 2 ) path = 'rescan';
+			if ( infoVal() == 3 ) path = 'dab';
 			bash( [ 'mpcupdate', path ] );
 		}
 	} );
