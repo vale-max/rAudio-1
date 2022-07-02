@@ -294,7 +294,7 @@ elif [[ $stream ]]; then
 		fi
 		[[ $file == *icecast.radiofrance.fr* ]] && icon=radiofrance
 		[[ $file == *stream.radioparadise.com* ]] && icon=radioparadise
-		[[ $file == *raudio.lan* ]] && tipo=DAB
+		[[ $file == *$(hostname -f)* ]] && tipo=DAB
 		if [[ $state != play ]]; then
 			state=stop
 			Title=
